@@ -35,7 +35,7 @@
 body {
 	font-family: 'Atkinson', sans-serif;
 	margin: 0;
-	padding: 0;
+	padding: 4rem 0 0 0;
 	text-align: left;
 	background: var(--black);
 	word-wrap: break-word;
