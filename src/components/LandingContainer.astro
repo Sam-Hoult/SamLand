@@ -21,13 +21,10 @@
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
     import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    let camera: THREE.PerspectiveCamera, 
-        scene: THREE.Scene, 
-        renderer: THREE.WebGLRenderer, 
-        composer: EffectComposer;
+    let camera, scene, renderer, composer;
     let modelsLoaded = 0;
     const totalModels = 2; // Updated to include text as a "model"
-    let textMesh: THREE.Mesh, gcodeMesh: THREE.Object3D;
+    let textMesh, gcodeMesh;
 
     // Adjust bloom parameters for a more subtle effect
     const params = {
@@ -37,16 +34,41 @@
         exposure: 0.8       // Reduced from 1 to 0.8
     };
 
-    init();
-    render();
+    // Add cleanup function
+    function cleanup() {
+        if (renderer) {
+            renderer.dispose();
+            renderer.domElement.remove();
+        }
+        if (composer) {
+            composer.dispose();
+        }
+    }
 
-    function init() {
-        // Adjust FOV based on device
+    // Wrap initialization in a function
+    function initializeScene() {
+        // First check if we're on the right page by looking for the container
+        const container = document.getElementById('threejs-canvas');
+        if (!container) {
+            return; // Exit if we're not on the page with the canvas
+        }
+
+        // Check if already initialized
+        const existingCanvas = container.querySelector('canvas');
+        if (existingCanvas) {
+            cleanup();
+        }
+
+        // Reset counter
+        modelsLoaded = 0;
+
+        // Initialize using outer scope variables
         const isMobile = window.innerWidth <= 768;
-        const fov = isMobile ? 100 : 60;  // Wider FOV for mobile
+        const fov = isMobile ? 100 : 60;
         camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(0, 20, 0);  // Start at z=0, with camera elevated
-        camera.lookAt(0, 17, 0);  // Look at where the text will be
+        camera.position.set(0, 20, 0);
+        camera.lookAt(0, 17, 0);
+        
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
 
@@ -244,6 +266,21 @@
     function render() {
         composer.render();
     }
+
+    // Only initialize if the container exists
+    if (document.getElementById('threejs-canvas')) {
+        initializeScene();
+    }
+
+    // Only add event listener if we're on the right page
+    document.addEventListener('astro:page-load', () => {
+        if (document.getElementById('threejs-canvas')) {
+            initializeScene();
+        }
+    });
+
+    // Always clean up on navigation
+    document.addEventListener('astro:before-preparation', cleanup);
 </script>
 
 <style>

@@ -4,16 +4,18 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import LandingContainer from '../components/LandingContainer.astro';
+import { ClientRouter } from 'astro:transitions';
 ---
 
 <!doctype html>
 <html lang="en" class="home-page">
 	<head>
 		<BaseHead title={'Let him cook... and scramble his eggs'} description={SITE_DESCRIPTION} />
+		<ClientRouter />
 	</head>
 	<body>
 		<Header />
-    <LandingContainer />
+		<LandingContainer />
 		<Footer />
 	</body>
 </html>
