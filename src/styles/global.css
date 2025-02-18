@@ -43,7 +43,11 @@ body {
 	color: rgb(var(--gray-dark));
 	font-size: 20px;
 	line-height: 1.7;
-  background-color: rgb(var(--black));
+	background-color: rgb(var(--black));
+}
+
+.home-page body {
+	padding: 0;
 }
 main {
 	width: 720px;

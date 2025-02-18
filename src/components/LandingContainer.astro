@@ -21,13 +21,11 @@
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
     import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    let camera: THREE.PerspectiveCamera, 
-        scene: THREE.Scene, 
-        renderer: THREE.WebGLRenderer, 
-        composer: EffectComposer;
+    let camera, scene, renderer, composer;
     let modelsLoaded = 0;
     const totalModels = 2; // Updated to include text as a "model"
-    let textMesh: THREE.Mesh, gcodeMesh: THREE.Object3D;
+    let textMesh, gcodeMesh;
+    let isInitialized = false;  // Add initialization flag
 
     // Adjust bloom parameters for a more subtle effect
     const params = {
@@ -37,12 +35,36 @@
         exposure: 0.8       // Reduced from 1 to 0.8
     };
 
-    init();
-    render();
+    // Add cleanup function
+    function cleanup() {
+        if (renderer) {
+            renderer.dispose();
+            renderer.domElement.remove();
+        }
+        if (composer) {
+            composer.dispose();
+        }
+        isInitialized = false;  // Reset flag on cleanup
+    }
 
-    function init() {
-        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(0, 20, 80);
+    // Wrap initialization in a function
+    function initializeScene() {
+        const container = document.getElementById('threejs-canvas');
+        if (!container || isInitialized) {
+            return; // Exit if no container or already initialized
+        }
+
+        isInitialized = true;  // Set flag
+
+        // Reset counter
+        modelsLoaded = 0;
+
+        // Initialize using outer scope variables
+        const isMobile = window.innerWidth <= 768;
+        const fov = isMobile ? 100 : 60;
+        camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.set(0, 20, 0);
+        camera.lookAt(0, 17, 0);
         
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
@@ -159,6 +181,11 @@
         const canvas = document.getElementById('threejs-canvas');
         if (!canvas) throw new Error('Canvas element not found');
         canvas.appendChild(renderer.domElement);
+        
+        // Fade in the canvas
+        requestAnimationFrame(() => {
+            canvas.style.opacity = '1';
+        });
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.addEventListener('change', render);
@@ -166,6 +193,35 @@
         controls.maxDistance = 200;
         controls.enableZoom = true;
         controls.enablePan = true;
+        controls.enabled = false;  // Disable controls initially
+        controls.target.set(0, 17, 0);  // Set target to match camera.lookAt position
+
+        // Start camera animation after composer is initialized
+        const startTime = performance.now();
+        const duration = 4000; // Duration in milliseconds
+        const animate = () => {
+            const currentTime = performance.now();
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Cubic easing out
+            const t = 1 - Math.pow(1 - progress, 3);
+            camera.position.set(0, 20, t * 100);
+            camera.lookAt(0, 17, 0);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                // Ensure final camera position and orientation
+                camera.position.set(0, 20, 100);
+                camera.lookAt(0, 17, 0);
+                controls.target.set(0, 17, 0);
+                controls.update();  // Update controls before enabling
+                controls.enabled = true;  // Enable controls after animation
+            }
+            render();
+        };
+        animate();
 
         // Update mousemove event listener
         canvas.addEventListener('mousemove', (event) => {
@@ -207,6 +263,20 @@
     function render() {
         composer.render();
     }
+
+    // Initial load
+    if (document.getElementById('threejs-canvas')) {
+        initializeScene();
+    }
+
+    // Handle navigation
+    document.addEventListener('astro:page-load', () => {
+        if (document.getElementById('threejs-canvas')) {
+            initializeScene();
+        }
+    });
+
+    document.addEventListener('astro:before-preparation', cleanup);
 </script>
 
 <style>
@@ -214,11 +284,13 @@
     background-color: rgb(var(--black));
   }
   #threejs-canvas {
-    position: relative;  /* Add this to properly position the spinner */
+    position: relative;
     width: 100%;
     height: 100%;
     min-height: 50vh;
     overflow: hidden;
+    opacity: 0;  /* Start hidden */
+    transition: opacity 1s ease-out;  /* Smooth fade in */
   }
 
   h1 {

@@ -17,13 +17,30 @@ import { SITE_TITLE } from '../consts';
 	header {
 		position: fixed;
 		top: 0;
-    left: 0;
-    right: 0;
+		left: 0;
+		right: 0;
 		z-index: 1000;
 		margin: 0;
 		padding: 0 1em;
 		background: rgb(var(--black));
 		box-shadow: 0 5px 8px rgba(0,0,0, 50%);
+	}
+
+	:global(.home-page) header {
+		opacity: 0;
+		transform: translateY(-100%);
+		animation: slideDown 0.5s ease-out 2s forwards;
+	}
+
+	@keyframes slideDown {
+		from {
+			transform: translateY(-100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
 	}
 	h2 {
 		margin: 0;
@@ -44,6 +61,12 @@ import { SITE_TITLE } from '../consts';
 		color: var(--accent);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+		transition: all 0.3s ease;
+	}
+	nav a:hover {
+		color: var(--accent-light);
+		border-bottom-color: var(--accent);
+		text-shadow: 0 0 8px var(--accent);
 	}
 	nav a.active {
 		text-decoration: none;
