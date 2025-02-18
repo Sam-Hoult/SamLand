@@ -25,6 +25,7 @@
     let modelsLoaded = 0;
     const totalModels = 2; // Updated to include text as a "model"
     let textMesh, gcodeMesh;
+    let isInitialized = false;  // Add initialization flag
 
     // Adjust bloom parameters for a more subtle effect
     const params = {
@@ -43,21 +44,17 @@
         if (composer) {
             composer.dispose();
         }
+        isInitialized = false;  // Reset flag on cleanup
     }
 
     // Wrap initialization in a function
     function initializeScene() {
-        // First check if we're on the right page by looking for the container
         const container = document.getElementById('threejs-canvas');
-        if (!container) {
-            return; // Exit if we're not on the page with the canvas
+        if (!container || isInitialized) {
+            return; // Exit if no container or already initialized
         }
 
-        // Check if already initialized
-        const existingCanvas = container.querySelector('canvas');
-        if (existingCanvas) {
-            cleanup();
-        }
+        isInitialized = true;  // Set flag
 
         // Reset counter
         modelsLoaded = 0;
@@ -267,19 +264,18 @@
         composer.render();
     }
 
-    // Only initialize if the container exists
+    // Initial load
     if (document.getElementById('threejs-canvas')) {
         initializeScene();
     }
 
-    // Only add event listener if we're on the right page
+    // Handle navigation
     document.addEventListener('astro:page-load', () => {
         if (document.getElementById('threejs-canvas')) {
             initializeScene();
         }
     });
 
-    // Always clean up on navigation
     document.addEventListener('astro:before-preparation', cleanup);
 </script>
 
