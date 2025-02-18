@@ -16,10 +16,23 @@
     import { GCodeLoader } from 'three/examples/jsm/loaders/GCodeLoader.js';
     import { FontLoader } from 'three/addons/loaders/FontLoader.js';
     import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    let camera, scene, renderer;
+    let camera, scene, renderer, composer;
     let modelsLoaded = 0;
     const totalModels = 2; // Updated to include text as a "model"
+    let textMesh, gcodeMesh;
+
+    // Adjust bloom parameters for a more subtle effect
+    const params = {
+        threshold: 0.2,     // Increased to reduce bloom on darker areas
+        strength: 0.4,      // Reduced from 1.5 to 0.6
+        radius: 0.3,        // Reduced from 0.4 to 0.3
+        exposure: 0.8       // Reduced from 1 to 0.8
+    };
 
     init();
     render();
@@ -28,11 +41,36 @@
         camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
         camera.position.set(0, 20, 80);
         
-        let textMesh;
-        let gcodeMesh;  // Store reference to the gcode object
-
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
+
+         // Add stars
+    const starsGeometry = new THREE.BufferGeometry();
+    const starsCount = 1000;
+    const positions = new Float32Array(starsCount * 3);
+    
+    // Create random star positions
+    for(let i = 0; i < starsCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 500;      // x
+        positions[i + 1] = (Math.random() - 0.5) * 500;  // y
+        positions[i + 2] = (Math.random() - 0.5) * 500;  // z
+    }
+    
+    starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    
+    const starsMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.5,
+        transparent: true,
+        opacity: 0.8,
+        sizeAttenuation: true
+    });
+    
+    const starField = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(starField);
+
+    // Make stars twinkle in the render loop
+    starField.rotation.x = 0.2;
 
         const loader = new GCodeLoader();
         loader.load('models/samland.gcode', function (object) {
@@ -96,7 +134,24 @@
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = Math.pow(params.exposure, 4.0);
+
+        // Setup post-processing
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            params.strength,
+            params.radius,
+            params.threshold
+        );
+        const outputPass = new OutputPass();
+
+        composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+        composer.addPass(outputPass);
+
         const canvas = document.getElementById('threejs-canvas');
         canvas.appendChild(renderer.domElement);
 
@@ -118,11 +173,22 @@
                 textMesh.rotation.x = mouseY * 0.1;
                 textMesh.rotation.y = mouseX * 0.1;
             }
+
+            // Add subtle star movement
+            starField.rotation.x = mouseY * 0.05;
+            starField.rotation.y = mouseX * 0.05;
             
             render();
         });
 
-        window.addEventListener('resize', resize);
+        // Update resize handler
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            render();
+        });
     }
 
     function checkAllModelsLoaded() {
@@ -132,15 +198,8 @@
         }
     }
 
-    function resize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        render();
-    }
-
     function render() {
-        renderer.render(scene, camera);
+        composer.render();
     }
 </script>
 
