@@ -21,10 +21,14 @@
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
     import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    let camera, scene, renderer, composer;
+    let camera: THREE.PerspectiveCamera;
+    let scene: THREE.Scene;
+    let renderer: THREE.WebGLRenderer;
+    let composer: EffectComposer;
     let modelsLoaded = 0;
     const totalModels = 2; // Updated to include text as a "model"
-    let textMesh, gcodeMesh;
+    let textMesh: THREE.Mesh;
+    let gcodeMesh: THREE.Group;
     let isInitialized = false;  // Add initialization flag
 
     // Adjust bloom parameters for a more subtle effect
