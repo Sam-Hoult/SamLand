@@ -5,60 +5,201 @@
 
 <div class="threejs-container">
   <div id="threejs-canvas">
+    <div class="loading-spinner"></div>
   </div>
 </div>
 
-<script type="module">
+<script>
     // Update imports to use relative paths if needed
-    import * as THREE from '/node_modules/three/build/three.module.js';
-    import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js';
-    import { GCodeLoader } from '/node_modules/three/examples/jsm/loaders/GCodeLoader.js';
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+    import { GCodeLoader } from 'three/examples/jsm/loaders/GCodeLoader.js';
+    import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+    import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    let camera, scene, renderer;
+    let camera, scene, renderer, composer;
+    let modelsLoaded = 0;
+    const totalModels = 2; // Updated to include text as a "model"
+    let textMesh, gcodeMesh;
+
+    // Adjust bloom parameters for a more subtle effect
+    const params = {
+        threshold: 0.2,     // Increased to reduce bloom on darker areas
+        strength: 0.4,      // Reduced from 1.5 to 0.6
+        radius: 0.3,        // Reduced from 0.4 to 0.3
+        exposure: 0.8       // Reduced from 1 to 0.8
+    };
 
     init();
     render();
 
     function init() {
         camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(0, 0, 70);
-
+        camera.position.set(0, 20, 80);
+        
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
 
+         // Add stars
+    const starsGeometry = new THREE.BufferGeometry();
+    const starsCount = 1000;
+    const positions = new Float32Array(starsCount * 3);
+    
+    // Create random star positions
+    for(let i = 0; i < starsCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 500;      // x
+        positions[i + 1] = (Math.random() - 0.5) * 500;  // y
+        positions[i + 2] = (Math.random() - 0.5) * 500;  // z
+    }
+    
+    starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    
+    const starsMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.5,
+        transparent: true,
+        opacity: 0.8,
+        sizeAttenuation: true
+    });
+    
+    const starField = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(starField);
+
+    // Make stars twinkle in the render loop
+    starField.rotation.x = 0.2;
+
         const loader = new GCodeLoader();
-        loader.load('models/octofrog.gcode', function (object) {
-            object.position.set(-120, -20, 100);
+        loader.load('models/samland.gcode', function (object) {
+            // Change the material color for all line segments
+            object.children.forEach(child => {
+                if (child.isLine) {
+                    child.material = new THREE.LineBasicMaterial({ 
+                        color: '#0ef85c',
+                        opacity: 0.2,
+                        transparent: true
+                    });
+                }
+            });
+            
+            object.position.set(-155, -20, 150);
+            gcodeMesh = object;  // Store reference
             scene.add(object);
+            modelsLoaded++;
+            checkAllModelsLoaded();
+            render();
+        });
+
+        // Add text
+        const fontLoader = new FontLoader();
+        fontLoader.load('/fonts/helvetiker_bold.typeface.json', function (font) {
+            const textGeometry = new TextGeometry('SAMLAND', {
+                font: font,
+                size: 10,
+                depth: 2,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 0.5,
+                bevelSize: 0.3,
+                bevelOffset: 0,
+                bevelSegments: 5
+            });
+
+            // Center the geometry itself
+            textGeometry.computeBoundingBox();
+            textGeometry.center();
+
+            const textMaterial = new THREE.MeshBasicMaterial({ 
+                color: '#00ff00',
+                wireframe: true 
+            });
+            textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            
+            // Center the text
+            textGeometry.computeBoundingBox();
+            const centerOffset = -0.1 * (textGeometry.boundingBox.max.x - textGeometry.boundingBox.min.x);
+            textMesh.position.x = centerOffset;
+            textMesh.position.y = 17;
+            textMesh.position.z = 0;
+
+            scene.add(textMesh);
+            modelsLoaded++;
+            checkAllModelsLoaded();
             render();
         });
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = Math.pow(params.exposure, 4.0);
+
+        // Setup post-processing
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            params.strength,
+            params.radius,
+            params.threshold
+        );
+        const outputPass = new OutputPass();
+
+        composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+        composer.addPass(outputPass);
+
         const canvas = document.getElementById('threejs-canvas');
         canvas.appendChild(renderer.domElement);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.addEventListener('change', render);
         controls.minDistance = 10;
-        controls.maxDistance = 100;
-        controls.enableZoom = false;
+        controls.maxDistance = 200;
+        controls.enableZoom = true;
         controls.enablePan = true;
 
-        window.addEventListener('resize', resize);
+        // Update mousemove event listener
+        canvas.addEventListener('mousemove', (event) => {
+            // Calculate normalized mouse position (-1 to 1)
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+
+            // Apply subtle rotation to text if it exists
+            if (textMesh) {
+                textMesh.rotation.x = mouseY * 0.1;
+                textMesh.rotation.y = mouseX * 0.1;
+            }
+
+            // Add subtle star movement
+            starField.rotation.x = mouseY * 0.05;
+            starField.rotation.y = mouseX * 0.05;
+            
+            render();
+        });
+
+        // Update resize handler
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            render();
+        });
     }
 
-    function resize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        render();
+    function checkAllModelsLoaded() {
+        if (modelsLoaded === totalModels) {
+            // Hide the loading spinner
+            document.querySelector('.loading-spinner').style.display = 'none';
+        }
     }
 
     function render() {
-        renderer.render(scene, camera);
+        composer.render();
     }
 </script>
 
@@ -67,8 +208,10 @@
     background-color: rgb(var(--black));
   }
   #threejs-canvas {
+    position: relative;  /* Add this to properly position the spinner */
     width: 100%;
     height: 100%;
+    min-height: 50vh;
     overflow: hidden;
   }
 
@@ -76,6 +219,23 @@
     margin: 0;
     font-size: 1.5em;
     color: #444;
+  }
+
+  .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
   }
 
 </style>
