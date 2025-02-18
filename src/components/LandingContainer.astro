@@ -21,10 +21,13 @@
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
     import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    let camera, scene, renderer, composer;
+    let camera: THREE.PerspectiveCamera, 
+        scene: THREE.Scene, 
+        renderer: THREE.WebGLRenderer, 
+        composer: EffectComposer;
     let modelsLoaded = 0;
     const totalModels = 2; // Updated to include text as a "model"
-    let textMesh, gcodeMesh;
+    let textMesh: THREE.Mesh, gcodeMesh: THREE.Object3D;
 
     // Adjust bloom parameters for a more subtle effect
     const params = {
@@ -76,9 +79,9 @@
         loader.load('models/samland.gcode', function (object) {
             // Change the material color for all line segments
             object.children.forEach(child => {
-                if (child.isLine) {
+                if (child instanceof THREE.Line) {
                     child.material = new THREE.LineBasicMaterial({ 
-                        color: '#0ef85c',
+                        color: '#ff00ff',
                         opacity: 0.2,
                         transparent: true
                     });
@@ -120,10 +123,11 @@
             
             // Center the text
             textGeometry.computeBoundingBox();
-            const centerOffset = -0.1 * (textGeometry.boundingBox.max.x - textGeometry.boundingBox.min.x);
-            textMesh.position.x = centerOffset;
-            textMesh.position.y = 17;
-            textMesh.position.z = 0;
+            if (textGeometry.boundingBox) {
+                const centerOffset = -0.1 * (textGeometry.boundingBox.max.x - textGeometry.boundingBox.min.x);
+                textMesh.position.x = centerOffset;
+                textMesh.position.y = 17;
+            }
 
             scene.add(textMesh);
             modelsLoaded++;
@@ -153,6 +157,7 @@
         composer.addPass(outputPass);
 
         const canvas = document.getElementById('threejs-canvas');
+        if (!canvas) throw new Error('Canvas element not found');
         canvas.appendChild(renderer.domElement);
 
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -194,7 +199,8 @@
     function checkAllModelsLoaded() {
         if (modelsLoaded === totalModels) {
             // Hide the loading spinner
-            document.querySelector('.loading-spinner').style.display = 'none';
+            const spinner = document.querySelector('.loading-spinner') as HTMLElement;
+            if (spinner) spinner.style.display = 'none';
         }
     }
 
