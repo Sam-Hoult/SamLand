@@ -2,7 +2,7 @@
 title: "Guess whom tis back"
 description: "New website, as I lost the last one"
 pubDate: 'Feb 19 2025'
-heroImage: '/images/about/cover.png'
+heroImage: '/images/brave_screenshot_sam.land.png'
 ---
 I lost the <a href="https://v1.sam.land" target="_blank">old website</a>, so here's a new one in a similar style.
 
