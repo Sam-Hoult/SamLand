@@ -39,6 +39,11 @@
         exposure: 0.8       // Reduced from 1 to 0.8
     };
 
+    // Optimize render quality vs performance
+    const isMobile = window.innerWidth <= 768;
+    const PIXEL_RATIO = isMobile ? 1 : window.devicePixelRatio;
+    const STAR_COUNT = isMobile ? 500 : 1000;
+
     // Add cleanup function
     function cleanup() {
         if (renderer) {
@@ -64,7 +69,6 @@
         modelsLoaded = 0;
 
         // Initialize using outer scope variables
-        const isMobile = window.innerWidth <= 768;
         const fov = isMobile ? 100 : 60;
         camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 1, 1000);
         camera.position.set(0, 20, 0);
@@ -73,33 +77,32 @@
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
 
-         // Add stars
-    const starsGeometry = new THREE.BufferGeometry();
-    const starsCount = 1000;
-    const positions = new Float32Array(starsCount * 3);
-    
-    // Create random star positions
-    for(let i = 0; i < starsCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 500;      // x
-        positions[i + 1] = (Math.random() - 0.5) * 500;  // y
-        positions[i + 2] = (Math.random() - 0.5) * 500;  // z
-    }
-    
-    starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    
-    const starsMaterial = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.5,
-        transparent: true,
-        opacity: 0.8,
-        sizeAttenuation: true
-    });
-    
-    const starField = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(starField);
+         // Optimize star field
+        const starsGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(STAR_COUNT * 3);
+        
+        for(let i = 0; i < STAR_COUNT * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 500;
+            positions[i + 1] = (Math.random() - 0.5) * 500;
+            positions[i + 2] = (Math.random() - 0.5) * 500;
+        }
+        
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3).setUsage(THREE.StaticDrawUsage));
 
-    // Make stars twinkle in the render loop
-    starField.rotation.x = 0.2;
+        const starsMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.5,
+            transparent: true,
+            opacity: 0.8,
+            sizeAttenuation: true
+        });
+        
+        const starField = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(starField);
+
+        // Make stars twinkle in the render loop
+        starField.rotation.x = 0.2;
 
         const loader = new GCodeLoader();
         loader.load('models/samland.gcode', function (object) {
@@ -125,16 +128,17 @@
         // Add text
         const fontLoader = new FontLoader();
         fontLoader.load('/fonts/helvetiker_bold.typeface.json', function (font) {
+            // Optimize text geometry
             const textGeometry = new TextGeometry('SAMLAND', {
                 font: font,
                 size: 10,
                 depth: 2,
-                curveSegments: 12,
+                curveSegments: isMobile ? 8 : 12,  // Reduce segments on mobile
                 bevelEnabled: true,
                 bevelThickness: 0.5,
                 bevelSize: 0.3,
                 bevelOffset: 0,
-                bevelSegments: 5
+                bevelSegments: isMobile ? 3 : 5
             });
 
             // Center the geometry itself
@@ -161,8 +165,12 @@
             render();
         });
 
-        renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
+        // Optimize renderer
+        renderer = new THREE.WebGLRenderer({ 
+            antialias: !isMobile,  // Disable antialiasing on mobile
+            powerPreference: "high-performance"
+        });
+        renderer.setPixelRatio(PIXEL_RATIO);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.toneMapping = THREE.ReinhardToneMapping;
         renderer.toneMappingExposure = Math.pow(params.exposure, 4.0);
@@ -170,7 +178,7 @@
         // Setup post-processing
         const renderScene = new RenderPass(scene, camera);
         const bloomPass = new UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2),  // Half resolution for bloom
             params.strength,
             params.radius,
             params.threshold
@@ -246,13 +254,17 @@
             render();
         });
 
-        // Update resize handler
+        // Add throttled resize handler
+        let resizeTimeout;
         window.addEventListener('resize', function() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            composer.setSize(window.innerWidth, window.innerHeight);
-            render();
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                composer.setSize(window.innerWidth, window.innerHeight);
+                render();
+            }, 100);
         });
     }
 
@@ -264,7 +276,9 @@
         }
     }
 
+    // Optimize render loop
     function render() {
+        if (!isInitialized) return;
         composer.render();
     }
 
