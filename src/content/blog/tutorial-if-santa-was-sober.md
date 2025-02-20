@@ -91,7 +91,7 @@ You’ll want to experiment to find what works best for your prompts
     - Limited AI features for editing.
     - Poor drag-and-drop functionality and timeline scaling.
 
-[Insert Image: CapCut timeline screenshot showing clips being aligned with music.]
+![/images/blog/if-santa-was-sober/capcut-timeline.png](/images/blog/if-santa-was-sober/capcut-timeline.png)
 
 #### 2.2 Trim and Clean
 
@@ -106,7 +106,7 @@ You’ll want to experiment to find what works best for your prompts
 - Exported the final video for review.
 - Hit a paywall for Pro features (unexpected, but sometimes necessary to save time).
 
-[Insert Image: Export screen with final video stats.]
+![/images/blog/if-santa-was-sober/capcut-paywall.png](/images/blog/if-santa-was-sober/capcut-paywall.png)
 
 ## Final Thoughts
 
