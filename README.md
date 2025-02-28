@@ -1,6 +1,19 @@
 # Sam.Land v2 built with Astro
-Make it sexy.
+
+## Make it sexy.
 ![Homepage Cover](public/images/brave_screenshot_sam.land.png)
+
+## Diagram
+![Diagram](public/images/blog/making-samland/diagram.png)
+
+
+## Technologies Used
+
+- 🚀 **[Astro](https://astro.build/)** - Modern static site generator
+- 🎨 **[Rodin](https://hyper3d.ai/rodin)** - AI-powered 3D model generation
+- 🖥️ **[Three.js](https://threejs.org/)** - 3D graphics library
+- ☁️ **[AWS Amplify](https://aws.amazon.com/amplify/)** - Cloud-based deployment and hosting
+
 
 ## 🧞 Commands
 
