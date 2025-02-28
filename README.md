@@ -1,5 +1,6 @@
 # Sam.Land v2 built with Astro
 Make it sexy.
+![Homepage Cover](public/images/brave_screenshot_sam.land.png)
 
 ## 🧞 Commands
 
