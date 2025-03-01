@@ -7,7 +7,7 @@ heroImage: '/images/brave_screenshot_sam.land.png'
 
 As a CTO, a huge part of my role was learning and then teaching, something I’ve always enjoyed, not just for the impact but for how much I learned in the process. Lately, I’ve been pushing myself to step back into that mindset, while also revisiting my old love for video filming and editing, a muscle I haven't nurtured in a very long time.
 
-To kick things off, I made a video on how I built Sam.Land, my new blog with an animated 3D intro and a blog. Building the site took less than a day. Remaking it while filming and editing? That took much longer. But this was my way of giving back to the developer/maker/creator community that I’ve learned so much from.
+To kick things off, I made a video on how I built Sam.Land, my new website with an animated 3D intro and a blog. Building the site took less than a day. Remaking it while filming and editing? That took much longer. But this was my way of giving back to the developer/maker/creator community that I’ve learned so much from.
 
 Links & Resources:
 - 🧑‍💻 [**GitHub**](https://github.com/Sam-Hoult/SamLand) - Code, to check it out yourself!
