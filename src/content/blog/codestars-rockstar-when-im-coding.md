@@ -28,13 +28,13 @@ The video was created using my <a href="/blog/tutorial-if-santa-was-sober/" targ
 
 The video footage is only really upscaled, and no colour correction. I kept it as simple as possible to be Text-to-Video that were mostly generated over night.
 
-Links & Resources:
+## Links & Resources
 - 🎙️ [**Suno**](https://suno.com/invite/@samland) - AI Music Generation
 - 👷‍♂️ [**ComfyUI**](https://github.com/comfyanonymous/ComfyUI) - Node-based AI pipeline
 - 📺 [**Wan2.1**](https://github.com/Wan-Video/Wan2.1)
 - 😵 **DaVinci Resolve** - Editor that totally shit the bed and crashed on me and I luckily exported.
 
-Lyrics:
+## Lyrics
 > [Verse]
 > I wear these big black shades when I code all night  
 > My setup's like a spaceship with all these lights  
@@ -84,71 +84,20 @@ Lyrics:
 > I'm livin' the life
 > 
 > [Chorus]  
-> Oh
-
-[Verse]
-I wear these big black shades when I code all night
-My setup's like a spaceship with all these lights
-My girl says
-"You're a nerd"
-but I disagree
-'Cause I'm a rockstar when I'm coding
-
-[Chorus]
-Yeah
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-Oh
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-I'm a rockstar when I'm coding
-
-[Verse]
-And I just made a change that brought my app to life
-Now I'm about to play my feature for my guys
-In a circle
-They can't believe what they're seein'
-'Cause I'm a rockstar when I'm coding
-
-[Chorus]
-Yeah
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-Oh
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-
-[Bridge]
-I've tried to fight it
-But I can't control myself
-All I wanna do is type
-I got a nervous tick that might ruin my health
-But I don't care
-I'm livin' the life
-
-[Chorus]
-Oh
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-Oh
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-Oh
-I'm coding and hacking
-And when the keyboards clackin'
-I'm shredding
-Man I can't stop
-I'm a rockstar when I'm coding
+> Oh <br>
+> I'm coding and hacking<br>
+> And when the keyboards clackin'<br>
+> I'm shredding<br>
+> Man I can't stop<br>
+> Oh<br>
+> I'm coding and hacking<br>
+> And when the keyboards clackin'<br>
+> I'm shredding<br>
+> Man I can't stop<br>
+> Oh<br>
+> I'm coding and hacking<br>
+> And when the keyboards clackin'<br>
+> I'm shredding<br>
+> Man I can't stop  
+> I'm a rockstar when I'm coding
 

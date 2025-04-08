@@ -1,0 +1,1323 @@
+{
+  "id": "86dd06bc-c33d-4f5e-bf64-8513728267da",
+  "revision": 0,
+  "last_node_id": 55,
+  "last_link_id": 95,
+  "nodes": [
+    {
+      "id": 47,
+      "type": "JSONParserNode",
+      "pos": [
+        -793.0166625976562,
+        117.42355346679688
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "parsed_data",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            70
+          ]
+        },
+        {
+          "name": "array_size",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-simple-json-node",
+        "ver": "1.1.0",
+        "Node name for S&R": "JSONParserNode"
+      },
+      "widgets_values": [
+        "[\n  {\n    \"title\": \"Closing the book in her bedroom\",\n    \"prompt\": \"A 28 year old woman with long brown hair and blue eyes sits on her bed, legs crossed, illuminated by the soft glow of a bedside lamp. The room is quiet, filled with a warm, golden hue as the evening sun fades outside. She stares down at the old scrapbook resting in her lap, fingers tracing the cover with a bittersweet smile. Slowly, she closes the book, pressing her hands over it as if holding onto the past for just a moment longer. The soft hum of the wind outside and the ticking of a clock are the only sounds. The camera lingers on her face, eyes slightly wet but resolute, before she finally sets the book aside and exhales deeply.\"\n  },\n  {\n    \"title\": \"Closing the book with a tear\",\n    \"prompt\": \"A 28 year old woman with long brown hair and blue eyes sits on the floor of her bedroom, back resting against the bed. The room is dim, lit only by the faint glow of the streetlights filtering through the curtains. In her hands, an old scrapbook lies open, pages filled with memories of summers long past. Her eyes scan over the last image—her younger self and an 18 year old man, both laughing under the carnival lights. A single tear slips down her cheek as she blinks, then, with a slow and deliberate motion, she closes the book. The camera lingers on her hands gripping the cover, her knuckles whitening slightly before she releases it and wipes her eyes. The silence in the room is heavy, yet peaceful.\"\n  },\n  {\n    \"title\": \"Fading Memories\",\n    \"prompt\": \"A 28 year old woman with long brown hair and blue eyes sits at her wooden desk, an old scrapbook spread open before her. The dim desk lamp casts a soft golden light over the pages, highlighting faded photographs and handwritten notes. Her fingers gently graze the images—beach days, carnival nights, stolen kisses—before she sighs and leans back. The camera shifts to her reflection in a nearby mirror, her expression lost in thought. Finally, she reaches forward, closing the book with a quiet *thud*. The camera lingers on the worn cover, then slowly pans to the window, where the night sky stretches endlessly, just like the memories she holds inside.\"\n  },\n  {\n    \"title\": \"Watercolor painting - girl walking to car\",\n    \"prompt\": \"A delicate watercolor painting depicting a 17 year old woman with long brown hair and blue eyes walking toward a blue SUV parked under dim streetlights. The colors are soft, blending into the warm hues of the summer night, but her figure is distinct—shoulders slumped, head slightly bowed. The brushstrokes capture the emotion in her expression, the sadness in her eyes as she glances back one last time. The background is blurred, evoking a dreamlike memory, with faint outlines of the fun fair’s distant lights fading into the horizon. The scene is nostalgic and melancholic, capturing the moment of departure with artistic elegance.\"\n  }\n]\n",
+        ""
+      ]
+    },
+    {
+      "id": 54,
+      "type": "Note",
+      "pos": [
+        -1341.922119140625,
+        124.58521270751953
+      ],
+      "size": [
+        468.5440368652344,
+        156.63059997558594
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "JSON format with Title and Prompt"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 30,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -773.915771484375,
+        368.63885498046875
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "shape": 3,
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            59
+          ]
+        },
+        {
+          "name": "CLIP",
+          "shape": 3,
+          "type": "CLIP",
+          "slot_index": 1,
+          "links": [
+            54,
+            60
+          ]
+        },
+        {
+          "name": "VAE",
+          "shape": 3,
+          "type": "VAE",
+          "slot_index": 2,
+          "links": [
+            46
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "FLUX1\\flux1-schnell-fp8.safetensors"
+      ]
+    },
+    {
+      "id": 37,
+      "type": "LoraLoader",
+      "pos": [
+        -772.002197265625,
+        526.3943481445312
+      ],
+      "size": [
+        315,
+        126
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 59
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 60
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            92
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 1,
+          "links": [
+            93,
+            94
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "LoraLoader"
+      },
+      "widgets_values": [
+        "FLUX\\Eldritch_Watercolor_for_Flux_1.0.safetensors",
+        1,
+        1
+      ]
+    },
+    {
+      "id": 49,
+      "type": "Text String",
+      "pos": [
+        -761.9627685546875,
+        747.59765625
+      ],
+      "size": [
+        315,
+        190
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "TEXT",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            74
+          ]
+        },
+        {
+          "name": "TEXT_B",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "TEXT_C",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "TEXT_D",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "Folder",
+      "properties": {
+        "cnr_id": "was-node-suite-comfyui",
+        "ver": "1.0.2",
+        "Node name for S&R": "Text String"
+      },
+      "widgets_values": [
+        "Hazy/locisng-final",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 44,
+      "type": "JSONArrayIteratorNode",
+      "pos": [
+        102.57987213134766,
+        129.50975036621094
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "json_input",
+          "type": "STRING",
+          "widget": {
+            "name": "json_input"
+          },
+          "link": 70
+        }
+      ],
+      "outputs": [
+        {
+          "name": "item",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            66,
+            69
+          ]
+        },
+        {
+          "name": "current_index",
+          "type": "INT",
+          "slot_index": 1,
+          "links": [
+            72
+          ]
+        },
+        {
+          "name": "total_items",
+          "type": "INT",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-simple-json-node",
+        "ver": "1.1.0",
+        "Node name for S&R": "JSONArrayIteratorNode"
+      },
+      "widgets_values": [
+        "",
+        0,
+        "incr"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -360.18060302734375,
+        137.95272827148438
+      ],
+      "size": [
+        285.6000061035156,
+        143.3764190673828
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 94
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            63
+          ]
+        }
+      ],
+      "title": "Style prompt",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "a watercolor painting of"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 42,
+      "type": "ShowText|pysssss",
+      "pos": [
+        591.1569213867188,
+        778.7769165039062
+      ],
+      "size": [
+        486.6990051269531,
+        161.1840057373047
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 68
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "shape": 6,
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            83
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-custom-scripts",
+        "ver": "1.2.3",
+        "Node name for S&R": "ShowText|pysssss"
+      },
+      "widgets_values": [
+        "",
+        "A 28 year old woman with long brown hair and blue eyes sits on her bed, legs crossed, illuminated by the soft glow of a bedside lamp. The room is quiet, filled with a warm, golden hue as the evening sun fades outside. She stares down at the old scrapbook resting in her lap, fingers tracing the cover with a bittersweet smile. Slowly, she closes the book, pressing her hands over it as if holding onto the past for just a moment longer. The soft hum of the wind outside and the ticking of a clock are the only sounds. The camera lingers on her face, eyes slightly wet but resolute, before she finally sets the book aside and exhales deeply."
+      ]
+    },
+    {
+      "id": 40,
+      "type": "JSONKeyCheckerNode",
+      "pos": [
+        108.06433868408203,
+        501.9284362792969
+      ],
+      "size": [
+        369.4002990722656,
+        102
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "json_input",
+          "type": "STRING",
+          "widget": {
+            "name": "json_input"
+          },
+          "link": 66
+        }
+      ],
+      "outputs": [
+        {
+          "name": "exists",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "value",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": [
+            67
+          ]
+        }
+      ],
+      "title": "Title",
+      "properties": {
+        "cnr_id": "comfyui-simple-json-node",
+        "ver": "1.1.0",
+        "Node name for S&R": "JSONKeyCheckerNode"
+      },
+      "widgets_values": [
+        "",
+        "title"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "JSONKeyCheckerNode",
+      "pos": [
+        109.37125396728516,
+        575.3486328125
+      ],
+      "size": [
+        375.84234619140625,
+        102
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "json_input",
+          "type": "STRING",
+          "widget": {
+            "name": "json_input"
+          },
+          "link": 69
+        }
+      ],
+      "outputs": [
+        {
+          "name": "exists",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "value",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": [
+            68,
+            82
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-simple-json-node",
+        "ver": "1.1.0",
+        "Node name for S&R": "JSONKeyCheckerNode"
+      },
+      "widgets_values": [
+        "",
+        "prompt"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "Display Int (rgthree)",
+      "pos": [
+        101.80081939697266,
+        646.5476684570312
+      ],
+      "size": [
+        315,
+        112
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "dir": 3,
+          "name": "input",
+          "type": "INT",
+          "widget": {
+            "name": "input"
+          },
+          "link": 72
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "rgthree-comfy",
+        "ver": "1.0.0",
+        "Node name for S&R": "Display Int (rgthree)"
+      },
+      "widgets_values": [
+        0,
+        ""
+      ]
+    },
+    {
+      "id": 48,
+      "type": "Text Concatenate",
+      "pos": [
+        583.1644287109375,
+        850.5872192382812
+      ],
+      "size": [
+        315,
+        178
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text_a",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text_a"
+          },
+          "link": 74
+        },
+        {
+          "name": "text_b",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text_b"
+          },
+          "link": 73
+        },
+        {
+          "name": "text_c",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text_c"
+          },
+          "link": null
+        },
+        {
+          "name": "text_d",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text_d"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            78
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "was-node-suite-comfyui",
+        "ver": "1.0.2",
+        "Node name for S&R": "Text Concatenate"
+      },
+      "widgets_values": [
+        "/",
+        "true",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 41,
+      "type": "ShowText|pysssss",
+      "pos": [
+        575.9976196289062,
+        667.5816650390625
+      ],
+      "size": [
+        315,
+        112
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 67
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "shape": 6,
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            73
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-custom-scripts",
+        "ver": "1.2.3",
+        "Node name for S&R": "ShowText|pysssss"
+      },
+      "widgets_values": [
+        "",
+        "Closing the book in her bedroom"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [
+        437.42596435546875,
+        412.66351318359375
+      ],
+      "size": [
+        422.84503173828125,
+        164.31304931640625
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 93
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 83
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            64
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        " a 17-year-old girl with long brown hair and blue eyes sits in the backseat of a car, her window rolled down as the warm summer wind lifts her hair. Sunlight filters through the trees, casting golden patterns on her face. She looks outside, lost in thought"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 33,
+      "type": "CLIPTextEncode",
+      "pos": [
+        488.240966796875,
+        482.1358947753906
+      ],
+      "size": [
+        422.84503173828125,
+        164.31304931640625
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            55
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (Negative Prompt)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 34,
+      "type": "Note",
+      "pos": [
+        705.380126953125,
+        558.9780883789062
+      ],
+      "size": [
+        282.8617858886719,
+        164.08004760742188
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "Note that Flux dev and schnell do not have any negative prompt so CFG should be set to 1.0. Setting CFG to 1.0 means the negative prompt is ignored.\n\nThe schnell model is a distilled model that can generate a good image with only 4 steps."
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 39,
+      "type": "ImpactConcatConditionings",
+      "pos": [
+        619.4559326171875,
+        159.6374053955078
+      ],
+      "size": [
+        220,
+        66
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning1",
+          "type": "CONDITIONING",
+          "link": 63
+        },
+        {
+          "name": "conditioning2",
+          "type": "CONDITIONING",
+          "link": 64
+        },
+        {
+          "name": "conditioning3",
+          "type": "CONDITIONING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            95
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-impact-pack",
+        "ver": "8.8.1",
+        "Node name for S&R": "ImpactConcatConditionings"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 31,
+      "type": "KSampler",
+      "pos": [
+        1247.6158447265625,
+        130.80079650878906
+      ],
+      "size": [
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 92
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 95
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 55
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "shape": 3,
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            52
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        323116477981468,
+        "randomize",
+        4,
+        1,
+        "euler",
+        "simple",
+        1
+      ]
+    },
+    {
+      "id": 27,
+      "type": "EmptySD3LatentImage",
+      "pos": [
+        -401.8963928222656,
+        868.9016723632812
+      ],
+      "size": [
+        315,
+        106
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "shape": 3,
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            51
+          ]
+        }
+      ],
+      "title": "Size",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "EmptySD3LatentImage"
+      },
+      "widgets_values": [
+        832,
+        480,
+        1
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 52,
+      "type": "Save image with extra metadata [Crystools]",
+      "pos": [
+        1675.8011474609375,
+        146.90499877929688
+      ],
+      "size": [
+        402.4900207519531,
+        310
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 79
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": 78
+        },
+        {
+          "name": "metadata_extra",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "metadata_extra"
+          },
+          "link": 82
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Metadata RAW",
+          "type": "METADATA_RAW",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI-Crystools",
+        "ver": "576b44b9b79e3bf4b5d50457a28924d89a42e7e1",
+        "Node name for S&R": "Save image with extra metadata [Crystools]"
+      },
+      "widgets_values": [
+        "ComfyUI",
+        true,
+        ""
+      ]
+    },
+    {
+      "id": 55,
+      "type": "Note",
+      "pos": [
+        1681.0042724609375,
+        517.5492553710938
+      ],
+      "size": [
+        344.5347595214844,
+        174.34620666503906
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "Saves prompt on image as 'extra' to extract in other workflow"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [
+        1168.1790771484375,
+        502.643310546875
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 52
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 46
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            79
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.18",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [
+      46,
+      30,
+      2,
+      8,
+      1,
+      "VAE"
+    ],
+    [
+      51,
+      27,
+      0,
+      31,
+      3,
+      "LATENT"
+    ],
+    [
+      52,
+      31,
+      0,
+      8,
+      0,
+      "LATENT"
+    ],
+    [
+      54,
+      30,
+      1,
+      33,
+      0,
+      "CLIP"
+    ],
+    [
+      55,
+      33,
+      0,
+      31,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      59,
+      30,
+      0,
+      37,
+      0,
+      "MODEL"
+    ],
+    [
+      60,
+      30,
+      1,
+      37,
+      1,
+      "CLIP"
+    ],
+    [
+      63,
+      38,
+      0,
+      39,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      64,
+      6,
+      0,
+      39,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      66,
+      44,
+      0,
+      40,
+      0,
+      "STRING"
+    ],
+    [
+      67,
+      40,
+      1,
+      41,
+      0,
+      "STRING"
+    ],
+    [
+      68,
+      43,
+      1,
+      42,
+      0,
+      "STRING"
+    ],
+    [
+      69,
+      44,
+      0,
+      43,
+      0,
+      "STRING"
+    ],
+    [
+      70,
+      47,
+      0,
+      44,
+      0,
+      "STRING"
+    ],
+    [
+      72,
+      44,
+      1,
+      46,
+      0,
+      "INT"
+    ],
+    [
+      73,
+      41,
+      0,
+      48,
+      1,
+      "STRING"
+    ],
+    [
+      74,
+      49,
+      0,
+      48,
+      0,
+      "STRING"
+    ],
+    [
+      78,
+      48,
+      0,
+      52,
+      1,
+      "STRING"
+    ],
+    [
+      79,
+      8,
+      0,
+      52,
+      0,
+      "IMAGE"
+    ],
+    [
+      82,
+      43,
+      1,
+      52,
+      2,
+      "STRING"
+    ],
+    [
+      83,
+      42,
+      0,
+      6,
+      1,
+      "STRING"
+    ],
+    [
+      92,
+      37,
+      0,
+      31,
+      0,
+      "MODEL"
+    ],
+    [
+      93,
+      37,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      94,
+      37,
+      1,
+      38,
+      0,
+      "CLIP"
+    ],
+    [
+      95,
+      39,
+      0,
+      31,
+      1,
+      "CONDITIONING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "Input",
+      "bounding": [
+        -825.5637817382812,
+        32.54997253417969,
+        858.4940185546875,
+        1017.9772338867188
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "Process prompt",
+      "bounding": [
+        66.03266143798828,
+        55.909690856933594,
+        964.530029296875,
+        979.983642578125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "process",
+      "bounding": [
+        1066.380615234375,
+        62.03235626220703,
+        562.603271484375,
+        964.0358276367188
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "Output",
+      "bounding": [
+        1665.8011474609375,
+        73.30492401123047,
+        578.7095947265625,
+        900.91064453125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.620921323059155,
+      "offset": [
+        -200.94618064725853,
+        154.03301088906218
+      ]
+    },
+    "ue_links": [],
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
