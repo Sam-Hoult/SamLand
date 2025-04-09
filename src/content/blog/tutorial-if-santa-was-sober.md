@@ -1,6 +1,6 @@
 ---
 title: "AI Music Video Tutorial"
-description: "How 'If Snata was Sober' was created"
+description: "How 'If Santa was Sober' was created"
 pubDate: 'Feb 16 2025'
 heroImage: '/images/blog/if-santa-was-sober/comfyui.png'
 ---
