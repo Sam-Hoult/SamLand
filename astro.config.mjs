@@ -8,6 +8,7 @@ import partytown from '@astrojs/partytown';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://sam.land',
+	server: { port: 4322 },
 	integrations: [
 		mdx(), 
 		sitemap(), 
