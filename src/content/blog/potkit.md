@@ -2,6 +2,7 @@
 title: "PotKit - Joints Protected. Ready to Light."
 description: "Introducing the PotKit, VIVIDconcept's smell-proof joint protector and lighter carrier."
 pubDate: 'Jun 17 2026'
+heroImage: '/images/blog/vividconcept/potkit-product.jpg'
 ---
 
 Next up from [VIVIDconcept](https://vividconcept.co), my product design house, is the [**PotKit**](https://vividconcept.co) - a smell-proof joint protector and lighter carrier designed for one-hand access on-the-go.
